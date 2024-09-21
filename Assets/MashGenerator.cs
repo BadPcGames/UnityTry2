@@ -19,45 +19,37 @@ public class MashGenerator : MonoBehaviour
     [SerializeField]
     private Gradient gradient;
 
-    public void setXSize(string? value)
+    public void setXSize(float value)
     {
-        if(value!=null)
-            xSize=int.Parse(value);
+        xSize=(int)value;
     }
-    public void setZSize(string? value)
+    public void setZSize(float value)
     {
-        if (value != null)
-            zSize = int.Parse(value);
+        zSize = (int)value;
     }
-    public void setMinY(string? value)
+    public void setMinY(float value)
     {
-        if (value != null)
-            minY = float.Parse(value);
+            minY = value;
     }
-    public void setMaxY(string? value)
+    public void setMaxY(float value)
     {
-        if (value != null)
-            maxY = float.Parse(value);
+            maxY = value;
     }
-    public void setSteps(string? value)
+    public void setSteps(float value)
     {
-        if (value != null)
-            steps = int.Parse(value);
+            steps = (int)value;
     }
-    public void setPlayers(string? value)
+    public void setPlayers(float value)
     {
-        if (value != null)
-            players = int.Parse(value);
+            players = (int)value;
     }
-    public void setDif(string? value)
+    public void setDif(float value)
     {
-        if (value != null)
-            dif =float.Parse(value);
+            dif =value;
     }
-    public void setSmooth(string? value)
+    public void setSmooth(float value)
     {
-        if(value!=null)
-            smoothIteration = int.Parse(value);
+            smoothIteration = (int)value;
     }
 
 
@@ -66,7 +58,7 @@ public class MashGenerator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
 
-    void Start()
+    public void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;

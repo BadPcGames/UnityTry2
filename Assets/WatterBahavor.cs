@@ -13,21 +13,18 @@ public class WatterBahavor : MonoBehaviour
     [SerializeField]
     private Material material;
 
-    public void setColor(string? value)
+    public void setColor(float value)
     {
-        if (value != null)
-            watterColor = float.Parse(value);
+            watterColor = value;
     }
 
-    public void setHight(string? value)
+    public void setHight(float value)
     {
-        if (value != null)
-            watterHight = float.Parse(value);
+        watterHight = value;
     }
-    public void setTrans(string? value)
+    public void setTrans(float value)
     {
-        if (value != null)
-            watterTransposetive = float.Parse(value);
+            watterTransposetive = value;
     }
 
     // Start is called before the first frame update

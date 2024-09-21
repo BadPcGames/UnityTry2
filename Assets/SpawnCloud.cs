@@ -12,13 +12,13 @@ public class SpawnCloud : MonoBehaviour
     public float spawnDellay;
     float nextSpawn;
 
-    public void Dellay(string? value)
+    public void Dellay(float value)
     {
-        spawnDellay=float.Parse(value);
+        spawnDellay=value;
     }
-    public void Hieght(string? value)
+    public void Hieght(float value)
     {
-        hieght = float.Parse(value);
+        hieght =value;
     }
 
 
