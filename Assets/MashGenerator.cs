@@ -10,7 +10,7 @@ public class MashGenerator : MonoBehaviour
 {
     private int xSize=20;
     private int zSize=20;
-    private float minY =-5;
+    private float minY =-3;
     private float maxY = 5;
     private int steps = 20;
     private int players = 20;
@@ -141,19 +141,19 @@ public class MashGenerator : MonoBehaviour
         mesh.RecalculateNormals();
     }
 
-    void OnDrawGizmos()
-    {
-        if (vertices == null)
-        {
-            return;
-        }
-        float scale = 40.0f / (xSize + zSize);
+    //void OnDrawGizmos()
+    //{
+    //    if (vertices == null)
+    //    {
+    //        return;
+    //    }
+    //    float scale = 40.0f / (xSize + zSize);
        
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            Gizmos.DrawSphere(new Vector3((vertices[i].x * scale) - 10, (vertices[i].y * scale), ((vertices[i].z) * scale) - 10), 0.1f);
+    //    for (int i = 0; i < vertices.Length; i++)
+    //    {
+    //        Gizmos.DrawSphere(new Vector3((vertices[i].x * scale) - 10, (vertices[i].y * scale), ((vertices[i].z) * scale) - 10), 0.1f);
 
-        }
-    }
+    //    }
+    //}
 
 }

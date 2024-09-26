@@ -8,6 +8,7 @@ public class CameraPosition : MonoBehaviour
 {
     private int angleX = 0;
     private int angleZ = 0;
+    [SerializeField]
     private float speed = 0.5f; 
     private Vector3 lastMousePosition;
     [SerializeField] private int radius;

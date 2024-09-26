@@ -64,7 +64,14 @@ namespace Assets
             {
                 for (int x = 0; x <= xSize; x++)
                 {   
-                    vertices[mark]=new Vector3(x, matrix[x,z], z);
+                    if(x==0||z==0|| z == zSize|| x == xSize)
+                    {
+                        vertices[mark] = new Vector3(x, minY, z);
+                    }
+                    else
+                    {
+                        vertices[mark] = new Vector3(x, matrix[x, z], z);
+                    }
                     mark++;
                 }
                
@@ -113,8 +120,8 @@ namespace Assets
         {
             for (int i = 0; i < players; i++)
             {
-                xPosition = Random.Range(0, xSize + 1);
-                zPosition = Random.Range(0, zSize + 1);
+                xPosition = Random.Range(3, xSize -2);
+                zPosition = Random.Range(3, zSize -2);
 
                 if (matrix[xPosition, zPosition] < maxY)
                 {
@@ -123,22 +130,22 @@ namespace Assets
                 for (int j = 0; j < steps; j++)
                 {
                     xPosition += Random.Range(-1, 2);
-                    if (xPosition > xSize)
+                    if (xPosition > xSize-2)
                     {
-                        xPosition = xSize;
+                        xPosition = xSize-2;
                     }
-                    if (xPosition < 0)
+                    if (xPosition < 3)
                     {
-                        xPosition++;
+                        xPosition=3;
                     }
                     zPosition += Random.Range(-1, 2);
-                    if (zPosition > zSize)
+                    if (zPosition > zSize-2)
                     {
-                        zPosition = zSize;
+                        zPosition = zSize-2;
                     }
-                    if (zPosition < 0)
+                    if (zPosition < 3)
                     {
-                        zPosition++;
+                        zPosition=3;
                     }
                     if (matrix[xPosition, zPosition] < maxY)
                     {

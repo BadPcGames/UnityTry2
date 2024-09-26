@@ -35,7 +35,7 @@ public class WatterBahavor : MonoBehaviour
         material.color=customColor;
         planeRenderer.material=material;
 
-        planeRenderer.transform.SetLocalPositionAndRotation(new Vector3(0,watterHight,0),new Quaternion());
+        //planeRenderer.transform.SetLocalPositionAndRotation(new Vector3(0,watterHight,0),new Quaternion());
     }
     // Update is called once per frame
     void Update()
