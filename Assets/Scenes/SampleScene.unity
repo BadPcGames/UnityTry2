@@ -7831,7 +7831,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 100
+  far clip plane: 200
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -19095,7 +19095,8 @@ MonoBehaviour:
   cam: {fileID: 963194225}
   chunk: {fileID: 6356563756887943751, guid: fada3e546bf56cc479fa17981499657e, type: 3}
   water: {fileID: 4038095589088004191, guid: 12dc83db27ed4544f86bd6e940e8be78, type: 3}
-  range: 3
+  range: 10
+  mainSeed: 777
 --- !u!4 &1587353283
 Transform:
   m_ObjectHideFlags: 0

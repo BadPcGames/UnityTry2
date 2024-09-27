@@ -10,6 +10,12 @@ namespace Assets
     public class Generator
     {
         private float minY;
+
+        public Generator(int seed)
+        {
+            Random.seed=seed;
+        }
+
         public float MinY
         {
             get

@@ -8,13 +8,21 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(MeshRenderer))]
 public class MashGenerator : MonoBehaviour
 {
+    [SerializeField]
     private int xSize=20;
+    [SerializeField]
     private int zSize=20;
+    [SerializeField]
     private float minY =-3;
+    [SerializeField]
     private float maxY = 5;
+    [SerializeField]
     private int steps = 20;
+    [SerializeField]
     private int players = 20;
+    [SerializeField]
     private float dif = 3;
+    [SerializeField]
     private int smoothIteration=2;
     [SerializeField]
     private Gradient gradient;
@@ -57,8 +65,14 @@ public class MashGenerator : MonoBehaviour
     Color[] colors;
     Vector3[] vertices;
     int[] triangles;
+    int seed;
 
-    public void Start()
+    public void setSeed(int value)
+    {
+        seed = value;
+    }
+
+    public void makeChumk()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
@@ -67,20 +81,16 @@ public class MashGenerator : MonoBehaviour
         float scale = 40.0f / (xSize + zSize);
         transform.localScale = new Vector3(scale, scale, scale);
     }
-    private void Update()
-    {
-       
-    }
 
     void Create()
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
-
-        Generator generator = new Generator();
+        Random.seed = seed;
+        Generator generator = new Generator(seed);
         generator.MinY = minY;
         generator.MaxY = maxY;
 
-        vertices = generator.GetVertices(xSize, zSize, steps, players, dif,smoothIteration);
+        vertices = generator.GetVertices(xSize, zSize, (int)(steps * Random.Range(0.3f, 1.5f)), (int)(players * Random.Range(0.3f, 1.5f)),dif, smoothIteration);
 
         triangles = new int[xSize * zSize * 6];
 
