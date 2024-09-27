@@ -21,21 +21,23 @@ public class worlLogic : MonoBehaviour
     private int size=15;
 
     void Start()
-    {
+    { 
         Random.seed=mainSeed;
         camChunk=new Vector2Int(0,0);
+
         for(int i = -range; i <=range; i++)
         {
             for (int j = -range; j <= range; j++)
             {
                 int chunkSeed = Random.Range(0, int.MaxValue);
                 chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
-                Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                 chunk.setSeed(chunkSeed);
                 chunk.makeChumk();
-                Instantiate(water, new Vector3(i * size +10, 0, j * size+10), new Quaternion());
+                Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
             }
         }
+        water.transform.localScale = new Vector3(3.6f * range, 1, 3.6f * range);
+        Instantiate(water, new Vector3(camChunk.x*size+10, 0,  camChunk.y*size+10), new Quaternion());    
     }
     void Update()
     {
@@ -49,15 +51,12 @@ public class worlLogic : MonoBehaviour
 
             GameObject[] objectsToDelete = GameObject.FindGameObjectsWithTag("Ground");
 
-
             foreach (GameObject obj in objectsToDelete)
             {
-                if((obj.transform.position.x < (camChunk.x - range) * 20)|| (obj.transform.position.x > (camChunk.x + range) * 20)
-                    || (obj.transform.position.z < (camChunk.y - range) * 20)|| (obj.transform.position.z > (camChunk.y + range) * 20))
+                if((obj.transform.position.x < (camChunk.x - range) * size)|| (obj.transform.position.x > (camChunk.x + range) * size)
+                    || (obj.transform.position.z < (camChunk.y - range) * size)|| (obj.transform.position.z > (camChunk.y + range) * size))
                 Destroy(obj);
             }
-            Debug.Log("ChangeByx" + changeByX);
-            Debug.Log("ChangeByz" + changeByZ);
 
             if (changeByX != 0)
             {
@@ -71,14 +70,12 @@ public class worlLogic : MonoBehaviour
                         Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                         chunk.setSeed(chunkSeed);
                         chunk.makeChumk();
-                        Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
                     }
                     else
                     {
                         Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                         chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
                         chunk.makeChumk();
-                        Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
                     }
                 }
             }
@@ -95,41 +92,18 @@ public class worlLogic : MonoBehaviour
                         Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                         chunk.setSeed(chunkSeed);
                         chunk.makeChumk();
-                        Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
                     }
                     else
                     {
                         Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                         chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
                         chunk.makeChumk();
-                        Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
                     }
                 }
             }
-
-
-            //for (int i =camChunk.x-range; i <= camChunk.x+range; i++)
-            //{
-            //    for (int j = camChunk.y- range; j <= camChunk.y+range; j++)
-            //    {
-            //        if(!chunkIsCreate.ContainsKey(new Vector2Int(i, j)))
-            //        {
-            //            int chunkSeed = Random.Range(0, int.MaxValue);
-            //            chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
-            //            Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-            //            chunk.setSeed(chunkSeed);
-            //            chunk.makeChumk();
-            //            Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
-            //        }
-            //        else
-            //        {
-            //            Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-            //            chunk.setSeed(chunkIsCreate[new Vector2Int(i,j)]);
-            //            chunk.makeChumk();
-            //            Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
-            //        }
-            //    }
-            //}
+            GameObject watterPlane = GameObject.FindGameObjectWithTag("Water");
+            if(watterPlane!=null)
+            watterPlane.transform.position = new Vector3(camChunk.x*size + 10, 0, camChunk.y*size + 10);
         }
     }
 
@@ -142,3 +116,28 @@ public class worlLogic : MonoBehaviour
         return camChunk.x != x || camChunk.y != z;
     }
 }
+
+
+
+//for (int i =camChunk.x-range; i <= camChunk.x+range; i++)
+//{
+//    for (int j = camChunk.y- range; j <= camChunk.y+range; j++)
+//    {
+//        if(!chunkIsCreate.ContainsKey(new Vector2Int(i, j)))
+//        {
+//            int chunkSeed = Random.Range(0, int.MaxValue);
+//            chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
+//            Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+//            chunk.setSeed(chunkSeed);
+//            chunk.makeChumk();
+//            Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
+//        }
+//        else
+//        {
+//            Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+//            chunk.setSeed(chunkIsCreate[new Vector2Int(i,j)]);
+//            chunk.makeChumk();
+//            Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
+//        }
+//    }
+//}
