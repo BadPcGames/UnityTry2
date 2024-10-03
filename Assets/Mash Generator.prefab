@@ -107,36 +107,18 @@ MonoBehaviour:
   players: 40
   dif: 3
   smoothIteration: 2
-  gradient:
-    serializedVersion: 2
-    key0: {r: 0, g: 0.29543877, b: 1, a: 1}
-    key1: {r: 0.87423915, g: 0.9716981, b: 0.41709682, a: 1}
-    key2: {r: 0.21515399, g: 0.8679245, b: 0.20879315, a: 0}
-    key3: {r: 0.72096705, g: 0.8867924, b: 0.4224813, a: 0}
-    key4: {r: 1, g: 1, b: 1, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 12722
-    ctime2: 29876
-    ctime3: 48573
-    ctime4: 65535
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 5
-    m_NumAlphaKeys: 2
+  material: {fileID: 2100000, guid: 0daf291d6b4706341a345f9a0cfc9305, type: 2}
+  layers:
+  - texture: {fileID: 2800000, guid: 2531817a76b7e414ebb9e39389d9375b, type: 3}
+    startHieght: 0
+  - texture: {fileID: 2800000, guid: 3ca92f69e6eb88f4e8795548b94b64cd, type: 3}
+    startHieght: 0.3
+  - texture: {fileID: 2800000, guid: 2fea2ced425a62944bf2717a7964afd1, type: 3}
+    startHieght: 0.4
+  - texture: {fileID: 2800000, guid: 974c94c9185319146bfe15115363948b, type: 3}
+    startHieght: 0.6
+  - texture: {fileID: 2800000, guid: c53c1e72653103842a59819aa7db4f7a, type: 3}
+    startHieght: 0.8
 --- !u!64 &-1642309719556862127
 MeshCollider:
   m_ObjectHideFlags: 0

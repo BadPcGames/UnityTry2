@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class worlLogic : MonoBehaviour
 {
-
     [SerializeField]
     private GameObject cam;
     [SerializeField]
@@ -15,6 +14,8 @@ public class worlLogic : MonoBehaviour
     private int range=1;
     [SerializeField]
     private int mainSeed=2;
+
+    private IEnumerator coroutine;
 
     private Vector2Int camChunk=new Vector2Int();
     private Dictionary<Vector2Int,int> chunkIsCreate=new Dictionary<Vector2Int,int>();
@@ -58,52 +59,69 @@ public class worlLogic : MonoBehaviour
                 Destroy(obj);
             }
 
-            if (changeByX != 0)
-            {
-                int i = camChunk.x + (range* changeByX);
-                for (int j = camChunk.y - range; j <= camChunk.y + range; j++)
-                {
-                    if (!chunkIsCreate.ContainsKey(new Vector2Int(i, j)))
-                    {
-                        int chunkSeed = Random.Range(0, int.MaxValue);
-                        chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
-                        Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-                        chunk.setSeed(chunkSeed);
-                        chunk.makeChumk();
-                    }
-                    else
-                    {
-                        Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-                        chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
-                        chunk.makeChumk();
-                    }
-                }
-            }
-            if (changeByZ != 0)
-            {
-                int j = camChunk.y + (range*changeByZ);
-                for (int i = camChunk.x - range; i <= camChunk.x + range; i++)
-                {
+            coroutine = addChunks(changeByX, changeByZ, true);
+            StartCoroutine(coroutine);
 
-                    if (!chunkIsCreate.ContainsKey(new Vector2Int(i, j)))
-                    {
-                        int chunkSeed = Random.Range(0, int.MaxValue);
-                        chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
-                        Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-                        chunk.setSeed(chunkSeed);
-                        chunk.makeChumk();
-                    }
-                    else
-                    {
-                        Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-                        chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
-                        chunk.makeChumk();
-                    }
-                }
-            }
             GameObject watterPlane = GameObject.FindGameObjectWithTag("Water");
             if(watterPlane!=null)
             watterPlane.transform.position = new Vector3(camChunk.x*size + 10, 0, camChunk.y*size + 10);
+        }
+    }
+
+    private IEnumerator addChunks(int changeByX,int changeByZ, bool wait)
+    {
+        if (changeByX != 0)
+        {
+            int i = camChunk.x + (range * changeByX);
+            for (int j = camChunk.y - range; j <= camChunk.y + range; j++)
+            {
+                if (!chunkIsCreate.ContainsKey(new Vector2Int(i, j)))
+                {
+                    int chunkSeed = Random.Range(0, int.MaxValue);
+                    chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+                    chunk.setSeed(chunkSeed);
+                    chunk.makeChumk();
+                }
+                else
+                {
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+                    chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
+                    chunk.makeChumk();
+                }
+
+                if (wait)
+                {
+                    yield return new WaitForSecondsRealtime(0.01f);
+                }
+            }
+        }
+        if (changeByZ != 0)
+        {
+            int j = camChunk.y + (range * changeByZ);
+            for (int i = camChunk.x - range; i <= camChunk.x + range; i++)
+            {
+
+                if (!chunkIsCreate.ContainsKey(new Vector2Int(i, j)))
+                {
+                    int chunkSeed = Random.Range(0, int.MaxValue);
+                    chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+                    chunk.setSeed(chunkSeed);
+                    chunk.makeChumk();
+                }
+                else
+                {
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+                    chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
+                    chunk.makeChumk();
+                }
+
+                if (wait)
+                {
+                    yield return new WaitForSecondsRealtime(0.01f);
+                }
+            }
         }
     }
 

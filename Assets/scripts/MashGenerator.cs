@@ -25,7 +25,9 @@ public class MashGenerator : MonoBehaviour
     [SerializeField]
     private int smoothIteration=2;
     [SerializeField]
-    private Gradient gradient;
+    private Material material;
+
+    [SerializeField] List<Layer> layers=new List<Layer>();
 
     public void setXSize(float value)
     {
@@ -78,6 +80,7 @@ public class MashGenerator : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
         Create();
         UpdateMesh();
+        GenerateTexture();
         float scale = 40.0f / (xSize + zSize);
         transform.localScale = new Vector3(scale, scale, scale);
     }
@@ -90,7 +93,7 @@ public class MashGenerator : MonoBehaviour
         generator.MinY = minY;
         generator.MaxY = maxY;
 
-        vertices = generator.GetVertices(xSize, zSize, (int)(steps * Random.Range(0.3f, 1.5f)), (int)(players * Random.Range(0.3f, 1.5f)),dif, smoothIteration);
+        vertices = generator.GetVertices(xSize, zSize, (int)(steps * Random.Range(0.3f, 1.5f)), (int)(players * Random.Range(0.3f, 1.5f)), (dif * Random.Range(0.3f, 1.5f)), smoothIteration);
 
         triangles = new int[xSize * zSize * 6];
 
@@ -113,33 +116,7 @@ public class MashGenerator : MonoBehaviour
             vert++;
         }
 
-        float trueMin = float.MaxValue;
-        float trueMax = float.MinValue;
-
-        foreach (Vector3 el in vertices)
-        {
-            if (trueMin > el.y)
-            {
-                trueMin = el.y;
-            }
-            if (trueMax < el.y)
-            {
-                trueMax = el.y;
-            }
-        }
-
-        colors = new Color[vertices.Length];
-
-        for (int i = 0, z = 0; z <= zSize; z++)
-        {
-            for (int x = 0; x <= xSize; x++)
-            {
-                float height =Mathf.InverseLerp(minY,maxY ,vertices[i].y);
-                colors[i] = gradient.Evaluate(height);
-                //float height = (float)vertices[i].y / (float)trueMax;
-                i++;
-            }
-        }
+       
     }
 
     void UpdateMesh()
@@ -166,4 +143,40 @@ public class MashGenerator : MonoBehaviour
     //    }
     //}
 
+    private void GenerateTexture() 
+    {
+        float trueMin = minY;
+        float trueMax = maxY;
+
+        material.SetFloat("minTerrainHeight",trueMin);
+        material.SetFloat("maxTerrainHeight", trueMax);
+
+        int layersCount=layers.Count;
+        material.SetInt("numTextures", layersCount);
+
+        float[] heights = new float[layersCount];
+        int index = 0;
+        foreach (Layer l in layers)
+        {
+            heights[index] = l.startHieght;
+            index++;
+        }
+        material.SetFloatArray("terrainHeights", heights);
+
+        Texture2DArray textures = new Texture2DArray(64, 64, layersCount, TextureFormat.RGBA32, true);
+
+        for (int i = 0; i < layersCount; i++)
+        {
+            textures.SetPixels(layers[i].texture.GetPixels(), i);
+        }
+
+        textures.Apply();
+        material.SetTexture("terrainTextures", textures);
+    }
+}
+[System.Serializable]
+class Layer
+{
+    public Texture2D texture;
+    [Range (0,1)]public float startHieght;
 }
