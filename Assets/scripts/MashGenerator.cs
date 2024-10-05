@@ -1,6 +1,7 @@
 using Assets;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -26,7 +27,6 @@ public class MashGenerator : MonoBehaviour
     private int smoothIteration=2;
     [SerializeField]
     private Material material;
-
     [SerializeField] List<Layer> layers=new List<Layer>();
 
     public void setXSize(float value)
@@ -64,7 +64,6 @@ public class MashGenerator : MonoBehaviour
 
 
     Mesh mesh;
-    Color[] colors;
     Vector3[] vertices;
     int[] triangles;
     int seed;
@@ -124,7 +123,6 @@ public class MashGenerator : MonoBehaviour
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
-        mesh.colors = colors;
         mesh.RecalculateNormals();
     }
 

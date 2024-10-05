@@ -6,10 +6,10 @@ using UnityEngine.UIElements;
 public class CloudBeahavor : MonoBehaviour
 {
     public GameObject cloudSpherePrefab; // Префаб для сферы облака
-   
+    [SerializeField]
+    private float speed = 0.15f;
 
     private bool called = false;
-    // Start is called before the first frame update
     void Start()
     {
         for (int i = 0; i <= Random.RandomRange(3,5); i++)
@@ -36,7 +36,7 @@ public class CloudBeahavor : MonoBehaviour
     IEnumerator CallMethodInSeconds()
     {
         yield return new WaitForSeconds(0.1f);
-        transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y, transform.position.z);
+        transform.position = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
         called = false;
     }
   

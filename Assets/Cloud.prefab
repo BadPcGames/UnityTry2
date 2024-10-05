@@ -123,3 +123,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cloudSpherePrefab: {fileID: 4129803064184132187, guid: fb554b02404b00e48a8566dd17fe1420, type: 3}
+  speed: 0.5

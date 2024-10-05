@@ -116,9 +116,9 @@ MonoBehaviour:
   - texture: {fileID: 2800000, guid: 2fea2ced425a62944bf2717a7964afd1, type: 3}
     startHieght: 0.4
   - texture: {fileID: 2800000, guid: 974c94c9185319146bfe15115363948b, type: 3}
-    startHieght: 0.6
+    startHieght: 0.5
   - texture: {fileID: 2800000, guid: c53c1e72653103842a59819aa7db4f7a, type: 3}
-    startHieght: 0.8
+    startHieght: 0.65
 --- !u!64 &-1642309719556862127
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -11,9 +11,13 @@ public class worlLogic : MonoBehaviour
     [SerializeField]
     private GameObject water;
     [SerializeField]
+    private GameObject cloud;
+    [SerializeField]
     private int range=1;
     [SerializeField]
     private int mainSeed=2;
+    [SerializeField]
+    private bool manualSeed;
 
     private IEnumerator coroutine;
 
@@ -21,11 +25,18 @@ public class worlLogic : MonoBehaviour
     private Dictionary<Vector2Int,int> chunkIsCreate=new Dictionary<Vector2Int,int>();
     private int size=15;
 
-    void Start()
-    { 
-        Random.seed=mainSeed;
-        camChunk=new Vector2Int(0,0);
 
+    void Start()
+    {
+        //Random.seed=manualSeed?mainSeed: System.DateTime.Now.Millisecond;
+
+        if (!manualSeed)
+        {
+            mainSeed=System.DateTime.Now.Millisecond;
+        }
+        Random.seed = mainSeed;
+
+        camChunk =new Vector2Int(0,0);
         for(int i = -range; i <=range; i++)
         {
             for (int j = -range; j <= range; j++)
@@ -34,11 +45,12 @@ public class worlLogic : MonoBehaviour
                 chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
                 chunk.setSeed(chunkSeed);
                 chunk.makeChumk();
-                Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+                Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());         
             }
         }
         water.transform.localScale = new Vector3(3.6f * range, 1, 3.6f * range);
-        Instantiate(water, new Vector3(camChunk.x*size+10, 0,  camChunk.y*size+10), new Quaternion());    
+        Instantiate(water, new Vector3(camChunk.x * size + 10, 0, camChunk.y * size + 10), new Quaternion());
+        Instantiate(cloud, new Vector3((camChunk.x+5) * size, 0, camChunk.y * size + 10), new Quaternion());
     }
     void Update()
     {
@@ -64,7 +76,11 @@ public class worlLogic : MonoBehaviour
 
             GameObject watterPlane = GameObject.FindGameObjectWithTag("Water");
             if(watterPlane!=null)
-            watterPlane.transform.position = new Vector3(camChunk.x*size + 10, 0, camChunk.y*size + 10);
+                watterPlane.transform.position = new Vector3(camChunk.x*size + 10, 0, camChunk.y*size + 10);
+            GameObject cloudSpawner = GameObject.FindGameObjectWithTag("Cloud");
+            if (cloudSpawner != null)
+                cloudSpawner.transform.position = new Vector3((camChunk.x + 5) * size , 0, camChunk.y * size);
+
         }
     }
 
@@ -134,28 +150,3 @@ public class worlLogic : MonoBehaviour
         return camChunk.x != x || camChunk.y != z;
     }
 }
-
-
-
-//for (int i =camChunk.x-range; i <= camChunk.x+range; i++)
-//{
-//    for (int j = camChunk.y- range; j <= camChunk.y+range; j++)
-//    {
-//        if(!chunkIsCreate.ContainsKey(new Vector2Int(i, j)))
-//        {
-//            int chunkSeed = Random.Range(0, int.MaxValue);
-//            chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
-//            Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-//            chunk.setSeed(chunkSeed);
-//            chunk.makeChumk();
-//            Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
-//        }
-//        else
-//        {
-//            Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
-//            chunk.setSeed(chunkIsCreate[new Vector2Int(i,j)]);
-//            chunk.makeChumk();
-//            Instantiate(water, new Vector3(i * size + 10, 0, j * size + 10), new Quaternion());
-//        }
-//    }
-//}

@@ -94,7 +94,7 @@ public class CameraPosition : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                transform.position = new Vector3(0, 15, 0);
+                transform.position = new Vector3(transform.position.x, 15, transform.position.z);
                 canvas.SetActive(true);
                 isMenu = true;
                 return;
@@ -106,7 +106,7 @@ public class CameraPosition : MonoBehaviour
             {
                 canvas.SetActive(false);
                 isMenu = false;
-                transform.position = new Vector3(0, 1, 0);
+                transform.position = new Vector3(transform.position.x, 1, transform.position.z);
                 angleX = 0;
                 return;
             }

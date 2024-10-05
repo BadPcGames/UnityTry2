@@ -28,8 +28,8 @@ public class SpawnCloud : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        spawnNight = spawnDellay/1.5f;
-        spawnDay = spawnDellay*3;
+        spawnNight = (spawnDellay/1.5f)/5;
+        spawnDay = (spawnDellay*3)/5;
 
     }
 
@@ -48,10 +48,10 @@ public class SpawnCloud : MonoBehaviour
         if (Time.time > nextSpawn)
         {
             nextSpawn= Time.time+spawnDellay;
-            randomZ = Random.Range(-10, 10);
-            CloudSpawn = new Vector3(transform.position.x, hieght+Random.Range(0.5f, 1.5f),randomZ);
+            randomZ = Random.Range(-75, 75);
+            CloudSpawn = new Vector3(transform.position.x, hieght+Random.Range(0.5f, 1.5f), transform.position.z+randomZ);
             GameObject cloud = Instantiate(Cloud,CloudSpawn,Quaternion.identity);
-            Destroy(cloud,15f);
+            Destroy(cloud,23f);
         }
 
 
