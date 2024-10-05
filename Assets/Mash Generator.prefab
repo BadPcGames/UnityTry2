@@ -119,6 +119,9 @@ MonoBehaviour:
     startHieght: 0.5
   - texture: {fileID: 2800000, guid: c53c1e72653103842a59819aa7db4f7a, type: 3}
     startHieght: 0.65
+  tree: {fileID: 2560113365253520994, guid: 45381a8680f1c074898e26e7baf4d324, type: 3}
+  startOfTreeHieght: 0
+  endOfTreeHieght: 1
 --- !u!64 &-1642309719556862127
 MeshCollider:
   m_ObjectHideFlags: 0

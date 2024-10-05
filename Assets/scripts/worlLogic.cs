@@ -44,8 +44,8 @@ public class worlLogic : MonoBehaviour
                 int chunkSeed = Random.Range(0, int.MaxValue);
                 chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
                 chunk.setSeed(chunkSeed);
-                chunk.makeChumk();
-                Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());         
+                chunk.makeChumk(i * size, j * size);
+                Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
             }
         }
         water.transform.localScale = new Vector3(3.6f * range, 1, 3.6f * range);
@@ -69,6 +69,14 @@ public class worlLogic : MonoBehaviour
                 if((obj.transform.position.x < (camChunk.x - range) * size)|| (obj.transform.position.x > (camChunk.x + range) * size)
                     || (obj.transform.position.z < (camChunk.y - range) * size)|| (obj.transform.position.z > (camChunk.y + range) * size))
                 Destroy(obj);
+            }
+            objectsToDelete = GameObject.FindGameObjectsWithTag("tree");
+
+            foreach (GameObject obj in objectsToDelete)
+            {
+                if ((obj.transform.position.x < (camChunk.x - range) * size) || (obj.transform.position.x > (camChunk.x + range) * size)
+                    || (obj.transform.position.z < (camChunk.y - range) * size) || (obj.transform.position.z > (camChunk.y + range) * size))
+                    Destroy(obj);
             }
 
             coroutine = addChunks(changeByX, changeByZ, true);
@@ -97,15 +105,15 @@ public class worlLogic : MonoBehaviour
                     chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
                     Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                     chunk.setSeed(chunkSeed);
-                    chunk.makeChumk();
+                    chunk.makeChumk(i * size, j * size);
                 }
                 else
                 {
                     Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                     chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
-                    chunk.makeChumk();
+                    chunk.makeChumk(i * size, j * size);
                 }
-
+                
                 if (wait)
                 {
                     yield return new WaitForSecondsRealtime(0.01f);
@@ -124,15 +132,14 @@ public class worlLogic : MonoBehaviour
                     chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
                     Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                     chunk.setSeed(chunkSeed);
-                    chunk.makeChumk();
+                    chunk.makeChumk(i * size, j * size);
                 }
                 else
                 {
                     Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                     chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
-                    chunk.makeChumk();
+                    chunk.makeChumk(i * size, j * size);
                 }
-
                 if (wait)
                 {
                     yield return new WaitForSecondsRealtime(0.01f);
