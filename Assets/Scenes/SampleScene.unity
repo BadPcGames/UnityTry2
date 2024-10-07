@@ -4019,7 +4019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1414602362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4535,7 +4535,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1587353282
 MonoBehaviour:
@@ -4553,7 +4553,7 @@ MonoBehaviour:
   chunk: {fileID: 6356563756887943751, guid: fada3e546bf56cc479fa17981499657e, type: 3}
   water: {fileID: 4038095589088004191, guid: 12dc83db27ed4544f86bd6e940e8be78, type: 3}
   cloud: {fileID: 8707901848202563267, guid: c0fac2ba7538d044993d8bb24678e629, type: 3}
-  range: 0
+  range: 1
   mainSeed: 2
   manualSeed: 1
 --- !u!4 &1587353283
@@ -6099,7 +6099,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1932288545
 Light:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 6203399221309250667}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 123, y: -1.1643633, z: 429}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,10 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b6aa35683dbbc4d91186818889972e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 40
-  minY: -3
-  maxY: 5
-  wood: {fileID: 8663867156258996427, guid: df749b5903df4554a9c5f49c275e56f1, type: 3}
+  iteration: 1
+  length: 0.3
+  angle: 30
+  variance: 10
+  wood: {fileID: 1217883769006621725, guid: 676d5d906e82df743a311b078a71412b, type: 3}
   leaves: {fileID: 4850461244719936837, guid: f8170f9479201ee4f860d9be21c93162, type: 3}
-  startOfTreeHieght: 0
-  endOfTreeHieght: 1

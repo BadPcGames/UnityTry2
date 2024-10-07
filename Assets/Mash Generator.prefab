@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10, y: 0, z: -10}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -105,7 +105,7 @@ MonoBehaviour:
   maxY: 5
   steps: 40
   players: 40
-  dif: 3
+  dif: 4
   smoothIteration: 2
   material: {fileID: 2100000, guid: 0daf291d6b4706341a345f9a0cfc9305, type: 2}
   layers:
@@ -116,12 +116,12 @@ MonoBehaviour:
   - texture: {fileID: 2800000, guid: 2fea2ced425a62944bf2717a7964afd1, type: 3}
     startHieght: 0.4
   - texture: {fileID: 2800000, guid: 974c94c9185319146bfe15115363948b, type: 3}
-    startHieght: 0.5
+    startHieght: 0.6
   - texture: {fileID: 2800000, guid: c53c1e72653103842a59819aa7db4f7a, type: 3}
-    startHieght: 0.65
-  tree: {fileID: 2560113365253520994, guid: 45381a8680f1c074898e26e7baf4d324, type: 3}
-  startOfTreeHieght: 0
-  endOfTreeHieght: 1
+    startHieght: 0.75
+  tree: {fileID: 6203399221309250667, guid: 45381a8680f1c074898e26e7baf4d324, type: 3}
+  startOfTreeHieght: 0.45
+  endOfTreeHieght: 0.55
 --- !u!64 &-1642309719556862127
 MeshCollider:
   m_ObjectHideFlags: 0

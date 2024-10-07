@@ -2,6 +2,7 @@ using Assets;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
@@ -30,7 +31,7 @@ public class MashGenerator : MonoBehaviour
     private Material material;
     [SerializeField] List<Layer> layers=new List<Layer>();
     [SerializeField]
-    private treeSpawner tree;
+    private GameObject tree ;
 
     [Range(0, 1)] public float startOfTreeHieght;
     [Range(0, 1)] public float endOfTreeHieght;
@@ -80,6 +81,7 @@ public class MashGenerator : MonoBehaviour
     public void setSeed(int value)
     {
         seed = value;
+        Random.seed = seed;
     }
 
     public void makeChumk(float x, float z)
@@ -88,41 +90,61 @@ public class MashGenerator : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
         Create();
         UpdateMesh();
-        //GenerateTexture();
-
-        float scale = 40.0f / (xSize + zSize);
+        GenerateTexture();
+        float scale = 80.0f / (xSize + zSize);
         transform.localScale = new Vector3(scale, scale, scale);
-
-        //mekeTreeForChunk(x, z, scale);
-        AddObjectsToVertices(x, z, scale);
+        mekeTreeForChunk(x, z, scale);
     }
 
     private void mekeTreeForChunk(float x, float z, float scale)
     {
+        float[] changeForTree = new float[vertices.Length];
 
-        foreach (Vector3 vertex in mesh.vertices)
+        for (int i = 0; i < vertices.Length; i++)
         {
-            Vector3 position = new Vector3(vertex.x * scale, vertex.y * scale, vertex.z * scale);
-            Instantiate(tree, position, new Quaternion());
+            float hieght = (vertices[i].y * scale - minY) / (maxY - minY);
+            if (hieght > startOfTreeHieght && hieght < endOfTreeHieght)
+            {
+                changeForTree[i] = 1;
+            }
         }
-        //foreach (Vector3 el in vertices)
-        //{
-        //    float hieght = (el.y - minY) / (maxY - minY);
-        //    if (hieght >= startOfTreeHieght && hieght <= endOfTreeHieght)
-        //    {
-        //        Vector3 position = new Vector3(el.x * scale, el.y, el.z * scale);
-        //        Instantiate(tree, position, new Quaternion());
-        //    }
-        //}
-    }
-
-    public void AddObjectsToVertices(float x, float z, float scale)
-    {
-        for(int i = 0; i < mesh.vertices.Length; i++)
+        for (int i = 0, j = 0; i < changeForTree.Length; i++, j++)
         {
-            GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            obj.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            obj.transform.position = new Vector3(vertices[i].x * scale, vertices[i].y * scale, vertices[i].z * scale);
+            if (changeForTree[i] != 0)
+            {
+                if (i > xSize)
+                {
+                    changeForTree[i] += changeForTree[i - 41];
+                }
+                if (i < changeForTree.Length - xSize)
+                {
+                    changeForTree[i] += changeForTree[i + 41];
+                }
+                if (j > 0)
+                {
+                    changeForTree[i] += changeForTree[i - 1];
+                }
+                if (j < xSize)
+                {
+                    changeForTree[i] += changeForTree[i + 1];
+                }
+            }
+            if (j == xSize)
+            {
+                j = 0;
+            }
+        }
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            float height = (vertices[i].y * scale - minY) / (maxY - minY);
+            if (height >startOfTreeHieght && height < endOfTreeHieght&& changeForTree[i]>4)
+            {
+                if (Random.Range(-10, 2) > 0)
+                {
+                    Vector3 treePosition = new Vector3(x + vertices[i].x * scale, vertices[i].y * scale, z + vertices[i].z * scale);
+                    Instantiate(tree, treePosition,new Quaternion());
+                }  
+            }
         }
     }
 
@@ -130,12 +152,12 @@ public class MashGenerator : MonoBehaviour
     void Create()
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
-        Random.seed = seed;
+
         Generator generator = new Generator(seed);
         generator.MinY = minY;
         generator.MaxY = maxY;
 
-        vertices = generator.GetVertices(xSize, zSize, (int)(steps * Random.Range(0.3f, 1.5f)), (int)(players * Random.Range(0.3f, 1.5f)), (dif * Random.Range(0.3f, 1.5f)), smoothIteration);
+        vertices = generator.GetVertices(xSize, zSize, (int)(steps*Random.Range(0.7f,1.5f)), (int)(players * Random.Range(0.7f, 1.5f)), (dif * Random.Range(0.7f, 1.5f)), smoothIteration);
 
         triangles = new int[xSize * zSize * 6];
 
@@ -159,6 +181,7 @@ public class MashGenerator : MonoBehaviour
         }
     }
 
+
     private void UpdateMesh()
     {
         mesh.Clear();
@@ -168,37 +191,36 @@ public class MashGenerator : MonoBehaviour
     }
 
 
+    private void GenerateTexture()
+    {
+        float trueMin = minY;
+        float trueMax = maxY;
 
-    //private void GenerateTexture()
-    //{
-    //    float trueMin = minY;
-    //    float trueMax = maxY;
+        material.SetFloat("minTerrainHeight", trueMin);
+        material.SetFloat("maxTerrainHeight", trueMax);
 
-    //    material.SetFloat("minTerrainHeight", trueMin);
-    //    material.SetFloat("maxTerrainHeight", trueMax);
+        int layersCount = layers.Count;
+        material.SetInt("numTextures", layersCount);
 
-    //    int layersCount = layers.Count;
-    //    material.SetInt("numTextures", layersCount);
+        float[] heights = new float[layersCount];
+        int index = 0;
+        foreach (Layer l in layers)
+        {
+            heights[index] = l.startHieght;
+            index++;
+        }
+        material.SetFloatArray("terrainHeights", heights);
 
-    //    float[] heights = new float[layersCount];
-    //    int index = 0;
-    //    foreach (Layer l in layers)
-    //    {
-    //        heights[index] = l.startHieght;
-    //        index++;
-    //    }
-    //    material.SetFloatArray("terrainHeights", heights);
+        Texture2DArray textures = new Texture2DArray(64, 64, layersCount, TextureFormat.RGBA32, true);
 
-    //    Texture2DArray textures = new Texture2DArray(64, 64, layersCount, TextureFormat.RGBA32, true);
+        for (int i = 0; i < layersCount; i++)
+        {
+            textures.SetPixels(layers[i].texture.GetPixels(), i);
+        }
 
-    //    for (int i = 0; i < layersCount; i++)
-    //    {
-    //        textures.SetPixels(layers[i].texture.GetPixels(), i);
-    //    }
-
-    //    textures.Apply();
-    //    material.SetTexture("terrainTextures", textures);
-    //}
+        textures.Apply();
+        material.SetTexture("terrainTextures", textures);
+    }
 }
 [System.Serializable]
 class Layer
