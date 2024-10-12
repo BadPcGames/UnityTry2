@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class worlLogic : MonoBehaviour
@@ -18,18 +19,36 @@ public class worlLogic : MonoBehaviour
     private int mainSeed=2;
     [SerializeField]
     private bool manualSeed;
+    [SerializeField]
+    private GameObject treeSpawner;
 
     private IEnumerator coroutine;
 
+    public void setSeed(string value)
+    {
+        mainSeed = int.Parse(value);
+    }
+
+    public void setIsManualSeed(bool value)
+    {
+        manualSeed = value;
+    }
+
+
     private Vector2Int camChunk=new Vector2Int();
     private Dictionary<Vector2Int,int> chunkIsCreate=new Dictionary<Vector2Int,int>();
-    private int size=30;
-
+    private int size=70;
+    private List<GameObject> trees;
 
     void Start()
     {
-        //Random.seed = manualSeed ? mainSeed : System.DateTime.Now.Millisecond;
-
+        trees = new List<GameObject>();
+        for(int i = 0; i < 10; i++)
+        {
+            GameObject tree = treeSpawner;
+            tree.tag = "tree";
+            trees.Add(tree);
+        }
         if (!manualSeed)
         {
             mainSeed = System.DateTime.Now.Millisecond;
@@ -44,14 +63,65 @@ public class worlLogic : MonoBehaviour
                 int chunkSeed = Random.Range(0, int.MaxValue);
                 chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
                 chunk.setSeed(chunkSeed);
-                chunk.makeChumk(i * size, j * size);
+                chunk.makeChumk();
+                chunk.mekeTreeForChunk(i * size, j * size, trees);
                 Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
             }
         }
-        water.transform.localScale = new Vector3(8f * range, 1, 8f * range);
-        Instantiate(water, new Vector3(camChunk.x * size+20 , 0, camChunk.y * size+20 ), new Quaternion());
+        water.transform.localScale = new Vector3(20f * range, 1, 20f * range);
+        Instantiate(water, new Vector3(camChunk.x * size+size / 2 , 0, camChunk.y * size+size/2 ), new Quaternion());
         Instantiate(cloud, new Vector3((camChunk.x + 5) * size, 0, camChunk.y * size + 10), new Quaternion());
     }
+
+    public void clearAndBuild()
+    {
+        if (!manualSeed)
+        {
+            mainSeed = System.DateTime.Now.Millisecond;
+        }
+        Random.seed = mainSeed;
+        chunkIsCreate = new Dictionary<Vector2Int, int>();
+
+        camChunk = new Vector2Int(Mathf.FloorToInt(cam.transform.position.x / size),
+                                        Mathf.FloorToInt(cam.transform.position.z / size));
+
+        GameObject[] objectsToDelete = GameObject.FindGameObjectsWithTag("Ground");
+        foreach (GameObject obj in objectsToDelete)
+        {
+                Destroy(obj);
+        }
+
+        objectsToDelete = GameObject.FindGameObjectsWithTag("tree");
+        foreach (GameObject obj in objectsToDelete)
+        {
+            Destroy(obj);
+        }
+
+
+        for (int i = -range + camChunk.x; i < range; i++)
+        {
+            for (int j = -range + camChunk.y; j < range; j++)
+            {
+
+                    int chunkSeed = Random.Range(0, int.MaxValue);
+                    chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
+                    chunk.setSeed(chunkSeed);
+                    chunk.makeChumk();
+                    chunk.mekeTreeForChunk(i * size, j * size, trees);
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
+                
+            }
+        }
+
+        GameObject watterPlane = GameObject.FindGameObjectWithTag("Water");
+        if (watterPlane != null)
+            watterPlane.transform.position = new Vector3(camChunk.x * size + size / 2, 0, camChunk.y * size + size / 2);
+        GameObject cloudSpawner = GameObject.FindGameObjectWithTag("Cloud");
+        if (cloudSpawner != null)
+            cloudSpawner.transform.position = new Vector3((camChunk.x + 5) * size, 0, camChunk.y * size);
+
+    }
+
     void Update()
     {
         if (camIsChangeChunk())
@@ -63,19 +133,20 @@ public class worlLogic : MonoBehaviour
                                         Mathf.FloorToInt(cam.transform.position.z / size));
 
             GameObject[] objectsToDelete = GameObject.FindGameObjectsWithTag("Ground");
-
             foreach (GameObject obj in objectsToDelete)
             {
                 if ((obj.transform.position.x < (camChunk.x - range) * size) || (obj.transform.position.x > (camChunk.x + range) * size)
                     || (obj.transform.position.z < (camChunk.y - range) * size) || (obj.transform.position.z > (camChunk.y + range) * size))
                     Destroy(obj);
             }
-            objectsToDelete = GameObject.FindGameObjectsWithTag("tree");
 
+            objectsToDelete = GameObject.FindGameObjectsWithTag("tree");
             foreach (GameObject obj in objectsToDelete)
             {
-                if ((obj.transform.position.x < (camChunk.x - range) * size) || (obj.transform.position.x > (camChunk.x + range) * size)
-                    || (obj.transform.position.z < (camChunk.y - range) * size) || (obj.transform.position.z > (camChunk.y + range) * size))
+                if (
+                    (obj.transform.position.x < (camChunk.x - range) * size) || (obj.transform.position.x > (camChunk.x + range) * size + size / 2)
+                    || (obj.transform.position.z < (camChunk.y - range) * size) || (obj.transform.position.z > (camChunk.y + range) * size+size/2)
+                    )
                     Destroy(obj);
             }
 
@@ -84,13 +155,14 @@ public class worlLogic : MonoBehaviour
 
             GameObject watterPlane = GameObject.FindGameObjectWithTag("Water");
             if (watterPlane != null)
-                watterPlane.transform.position = new Vector3(camChunk.x * size + 20, 0, camChunk.y * size +20);
+                watterPlane.transform.position = new Vector3(camChunk.x * size + size/2, 0, camChunk.y * size +size/2);
             GameObject cloudSpawner = GameObject.FindGameObjectWithTag("Cloud");
             if (cloudSpawner != null)
                 cloudSpawner.transform.position = new Vector3((camChunk.x + 5) * size, 0, camChunk.y * size);
 
         }
     }
+
 
     private IEnumerator addChunks(int changeByX, int changeByZ, bool wait)
     {
@@ -104,14 +176,16 @@ public class worlLogic : MonoBehaviour
                     int chunkSeed = Random.Range(0, int.MaxValue);
                     chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
                     chunk.setSeed(chunkSeed);
-                    chunk.makeChumk(i * size, j * size);
+                    chunk.makeChumk();
+                    chunk.mekeTreeForChunk(i * size, j * size, trees);
                     Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());    
                 }
                 else
                 {
                     chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
-                    chunk.makeChumk(i * size, j * size);
-                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());   
+                    chunk.makeChumk();
+                    chunk.mekeTreeForChunk(i * size, j * size, trees);
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                 }
 
                 if (wait)
@@ -131,14 +205,16 @@ public class worlLogic : MonoBehaviour
                     int chunkSeed = Random.Range(0, int.MaxValue);
                     chunkIsCreate.Add(new Vector2Int(i, j), chunkSeed);
                     chunk.setSeed(chunkSeed);
-                    chunk.makeChumk(i * size, j * size);
-                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());                
+                    chunk.makeChumk();
+                    chunk.mekeTreeForChunk(i * size, j * size, trees);
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                 }
                 else
                 {
                     chunk.setSeed(chunkIsCreate[new Vector2Int(i, j)]);
-                    chunk.makeChumk(i * size, j * size);
-                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());   
+                    chunk.makeChumk();
+                    chunk.mekeTreeForChunk(i * size, j * size, trees);
+                    Instantiate(chunk, new Vector3(i * size, 0, j * size), new Quaternion());
                 }
                 if (wait)
                 {

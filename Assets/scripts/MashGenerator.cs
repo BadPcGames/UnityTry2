@@ -30,8 +30,8 @@ public class MashGenerator : MonoBehaviour
     [SerializeField]
     private Material material;
     [SerializeField] List<Layer> layers=new List<Layer>();
-    [SerializeField]
-    private GameObject tree ;
+    [SerializeField] GameObject rock;
+
 
     [Range(0, 1)] public float startOfTreeHieght;
     [Range(0, 1)] public float endOfTreeHieght;
@@ -72,7 +72,7 @@ public class MashGenerator : MonoBehaviour
         return vertices;
     }
 
-
+    float scale;
     Mesh mesh;
     Vector3[] vertices;
     int[] triangles;
@@ -84,19 +84,18 @@ public class MashGenerator : MonoBehaviour
         Random.seed = seed;
     }
 
-    public void makeChumk(float x, float z)
+    public void makeChumk()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
         Create();
         UpdateMesh();
         GenerateTexture();
-        float scale = 80.0f / (xSize + zSize);
+        scale = 160.0f / (xSize + zSize);
         transform.localScale = new Vector3(scale, scale, scale);
-        mekeTreeForChunk(x, z, scale);
     }
 
-    private void mekeTreeForChunk(float x, float z, float scale)
+    public void mekeTreeForChunk(float x, float z, List<GameObject> trees)
     {
         float[] changeForTree = new float[vertices.Length];
 
@@ -134,16 +133,28 @@ public class MashGenerator : MonoBehaviour
                 j = 0;
             }
         }
-        for (int i = 0; i < vertices.Length; i++)
+        for (int i = 0,j=0; i < vertices.Length; i++)
         {
             float height = (vertices[i].y * scale - minY) / (maxY - minY);
             if (height >startOfTreeHieght && height < endOfTreeHieght&& changeForTree[i]>4)
             {
-                if (Random.Range(-10, 2) > 0)
+                if (Random.Range(-2, 2) > 0)
                 {
                     Vector3 treePosition = new Vector3(x + vertices[i].x * scale, vertices[i].y * scale, z + vertices[i].z * scale);
-                    Instantiate(tree, treePosition,new Quaternion());
+                    Instantiate(trees[j], treePosition,new Quaternion());
+                    if(j<trees.Count-1)
+                    j++;
+                    else j = 0;
                 }  
+            }
+            else
+            {
+                if (Random.Range(-20, 2) > 0)
+                {
+                    Vector3 rockPosition = new Vector3(x + vertices[i].x * scale, vertices[i].y * scale, z + vertices[i].z * scale);
+                    rock.transform.localScale = new Vector3(scale,scale,scale);
+                    Instantiate(rock, rockPosition, new Quaternion());
+                }
             }
         }
     }
@@ -193,8 +204,8 @@ public class MashGenerator : MonoBehaviour
 
     private void GenerateTexture()
     {
-        float trueMin = minY;
-        float trueMax = maxY;
+        float trueMin = minY*scale;
+        float trueMax = maxY*scale;
 
         material.SetFloat("minTerrainHeight", trueMin);
         material.SetFloat("maxTerrainHeight", trueMax);

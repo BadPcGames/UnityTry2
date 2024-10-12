@@ -27,7 +27,7 @@ public class treeSpawner : MonoBehaviour
 
     private void Start()
     {
-        angle =30;
+        angle = 30;
         transformStack = new Stack<TransformInfo>();
         listForLeaves.Add(new Vector3(0, -100, 100));
         for (int i = 0; i < randomRotationValues.Length; i++)
@@ -43,7 +43,6 @@ public class treeSpawner : MonoBehaviour
 
             { 'F', "FF" }
         };
-
         GenerateTree();
     }
 
@@ -52,7 +51,6 @@ public class treeSpawner : MonoBehaviour
         currentString = axiom;
         StringBuilder sb = new StringBuilder();
 
-        // Генерация строки L-системы
         for (int i = 0; i < iteration; i++)
         {
             foreach (char c in currentString)
@@ -62,8 +60,6 @@ public class treeSpawner : MonoBehaviour
             currentString = sb.ToString();
             sb = new StringBuilder();
         }
-
-        // Проход по сгенерированной строке
         for (int i = 0; i < currentString.Length; i++)
         {
             switch (currentString[i])

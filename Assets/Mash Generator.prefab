@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -119,7 +119,7 @@ MonoBehaviour:
     startHieght: 0.6
   - texture: {fileID: 2800000, guid: c53c1e72653103842a59819aa7db4f7a, type: 3}
     startHieght: 0.75
-  tree: {fileID: 6203399221309250667, guid: 45381a8680f1c074898e26e7baf4d324, type: 3}
+  rock: {fileID: 2517878038871039455, guid: bce1c41b81ef6d0449552bf95b6559a2, type: 3}
   startOfTreeHieght: 0.45
   endOfTreeHieght: 0.55
 --- !u!64 &-1642309719556862127

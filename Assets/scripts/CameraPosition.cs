@@ -15,7 +15,6 @@ public class CameraPosition : MonoBehaviour
     [SerializeField] private int radius;
     [SerializeField] GameObject canvas;
     private bool isMenu = false;
-    private Vector3 position;
     private Camera camera;
 
     void Start()
@@ -30,15 +29,6 @@ public class CameraPosition : MonoBehaviour
         camera.depthTextureMode = DepthTextureMode.Depth;
     }
 
-    //private void changePosition()
-    //{
-    //    position.x = -radius * 0.7f;
-    //    position.z = -radius * 0.7f;
-    //    position.y = radius / 2;
-
-    //    transform.position = position;
-    //    transform.rotation = Quaternion.Euler(20f, 45f, 0f);
-    //}
 
     void Update()
     {
@@ -52,7 +42,6 @@ public class CameraPosition : MonoBehaviour
 
         if (!isMenu)
         {
-
             transform.rotation = Quaternion.Euler(-angleZ, angleX, 0);
 
             if (Input.GetKey(KeyCode.W))
@@ -94,7 +83,8 @@ public class CameraPosition : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                transform.position = new Vector3(transform.position.x, 15, transform.position.z);
+                transform.position = new Vector3(transform.position.x, 45, transform.position.z);
+                transform.localRotation = Quaternion.Euler(45,45,0);
                 canvas.SetActive(true);
                 isMenu = true;
                 return;
@@ -106,7 +96,7 @@ public class CameraPosition : MonoBehaviour
             {
                 canvas.SetActive(false);
                 isMenu = false;
-                transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+                transform.position = new Vector3(transform.position.x , 3, transform.position.z);
                 angleX = 0;
                 return;
             }
