@@ -21,12 +21,23 @@ public class CameraPosition : MonoBehaviour
     {
         canvas.SetActive(false);
         lastMousePosition = Input.mousePosition;
-    }
-
-    private void Awake()
-    {
         camera = GetComponent<Camera>();
         camera.depthTextureMode = DepthTextureMode.Depth;
+        camera.stereoTargetEye=StereoTargetEyeMask.Both;
+    }
+
+    public Material anaglyphMaterial;
+
+    void OnRenderImage(RenderTexture source, RenderTexture destination)
+    {
+        if (anaglyphMaterial != null)
+        {
+            Graphics.Blit(source, destination, anaglyphMaterial);
+        }
+        else
+        {
+            Graphics.Blit(source, destination);
+        }
     }
 
 

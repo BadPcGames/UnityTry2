@@ -70,7 +70,7 @@ public class worlLogic : MonoBehaviour
         }
         water.transform.localScale = new Vector3(20f * range, 1, 20f * range);
         Instantiate(water, new Vector3(camChunk.x * size+size / 2 , 0, camChunk.y * size+size/2 ), new Quaternion());
-        Instantiate(cloud, new Vector3((camChunk.x + 5) * size, 0, camChunk.y * size + 10), new Quaternion());
+        Instantiate(cloud, new Vector3((camChunk.x +2) * size, 0, (camChunk.y+0.5f) * size), new Quaternion());
     }
 
     public void clearAndBuild()
@@ -118,7 +118,7 @@ public class worlLogic : MonoBehaviour
             watterPlane.transform.position = new Vector3(camChunk.x * size + size / 2, 0, camChunk.y * size + size / 2);
         GameObject cloudSpawner = GameObject.FindGameObjectWithTag("Cloud");
         if (cloudSpawner != null)
-            cloudSpawner.transform.position = new Vector3((camChunk.x + 5) * size, 0, camChunk.y * size);
+            cloudSpawner.transform.position = new Vector3((camChunk.x + 2) * size, 0, (camChunk.y + 0.5f) * size);
 
     }
 
@@ -158,7 +158,7 @@ public class worlLogic : MonoBehaviour
                 watterPlane.transform.position = new Vector3(camChunk.x * size + size/2, 0, camChunk.y * size +size/2);
             GameObject cloudSpawner = GameObject.FindGameObjectWithTag("Cloud");
             if (cloudSpawner != null)
-                cloudSpawner.transform.position = new Vector3((camChunk.x + 5) * size, 0, camChunk.y * size);
+            cloudSpawner.transform.position =new Vector3((camChunk.x + 2) * size, 0, (camChunk.y + 0.5f) * size);
 
         }
     }

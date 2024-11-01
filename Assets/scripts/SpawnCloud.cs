@@ -51,7 +51,7 @@ public class SpawnCloud : MonoBehaviour
             randomZ = Random.Range(-75, 75);
             CloudSpawn = new Vector3(transform.position.x, hieght+Random.Range(0.5f, 1.5f), transform.position.z+randomZ);
             GameObject cloud = Instantiate(Cloud,CloudSpawn,Quaternion.identity);
-            Destroy(cloud,23f);
+            Destroy(cloud,40f);
         }
 
 
